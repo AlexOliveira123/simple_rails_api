@@ -5,7 +5,8 @@ class UsersController < ApplicationController
     end
 
     def show
-        render json: {'id': params_users['id']}, status: 200
+        user = User.find(params.require(:id))
+        render json: {id: user.id, name: user.name}, status: 200
     end
 
     private
