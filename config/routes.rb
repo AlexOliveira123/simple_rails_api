@@ -10,6 +10,11 @@ Rails.application.routes.draw do
       get 'show/:id', to: 'users#show'
       get 'show_all', to: 'users#show_all'
       put 'update/:id', to: 'users#update'
+      get ':id/check_age', to: 'users#check_age'
+    end
+    
+    scope 'heroes' do
+      get 'show_all', to: 'heroes#show_all'
     end
   end
 end

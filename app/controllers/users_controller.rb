@@ -15,7 +15,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find(params_users[:id])
     if user
       render json: { id: user.id, name: user.name }, status: 200
     else
@@ -31,13 +30,17 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find(params_users['id'])
     if verify_update_params && user
       user.update(params_users)
       render json: { 'message': "User #{user.id} updated" }, status: 200
     else
       render json: { 'message': "User #{params_users['id']} not found" }, status: 404
     end
+  end
+
+  def check_age
+    service = ::CheckAge.new(user)
+    render json: { 'message': service.execute }, status: 200
   end
 
   private
@@ -48,5 +51,9 @@ class UsersController < ApplicationController
 
   def verify_update_params
     params_users['name'].present? && params_users['age'].present?
+  end
+
+  def user
+    @user ||= User.find(params_users['id'])
   end
 end
